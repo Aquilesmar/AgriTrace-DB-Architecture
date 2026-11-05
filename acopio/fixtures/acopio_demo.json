@@ -1,0 +1,14 @@
+[
+  {"model": "acopio.campana", "pk": 1, "fields": {"codigo": "demo-2026"}},
+  {"model": "acopio.productor", "pk": 1, "fields": {"codigo": "P-001"}},
+  {"model": "acopio.productor", "pk": 2, "fields": {"codigo": "P-002"}},
+  {"model": "acopio.productor", "pk": 3, "fields": {"codigo": "P-003"}},
+  {"model": "acopio.cupo", "pk": 1, "fields": {"campana": 1, "productor": 1, "limite_kg": 1000}},
+  {"model": "acopio.cupo", "pk": 2, "fields": {"campana": 1, "productor": 2, "limite_kg": 800}},
+  {"model": "acopio.cupo", "pk": 3, "fields": {"campana": 1, "productor": 3, "limite_kg": 500}},
+  {"model": "acopio.entrega", "pk": 1, "fields": {"cupo": 1, "peso_kg": 350}},
+  {"model": "acopio.entrega", "pk": 2, "fields": {"cupo": 1, "peso_kg": 250}},
+  {"model": "acopio.entrega", "pk": 3, "fields": {"cupo": 2, "peso_kg": 800}},
+  {"model": "acopio.entrega", "pk": 4, "fields": {"cupo": 3, "peso_kg": 300}},
+  {"model": "acopio.entrega", "pk": 5, "fields": {"cupo": 3, "peso_kg": 325}}
+]
