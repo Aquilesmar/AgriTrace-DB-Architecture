@@ -1,4 +1,4 @@
-# Revisión técnica de AgriTrace
+# Revisión técnica de AgroTrace
 
 ## Qué quise resolver
 
@@ -23,7 +23,7 @@ Espero ver `acopiado_kg = 625`, `saldo_kg = -125` y `desvio = true`. En `P-002`,
 
 Como experimento se recortó temporalmente el saldo a cero en memoria. La prueba falló con `0 != -125` y volvió a pasar al quitar el recorte. Ese es el cambio que más me interesa detectar en una revisión de código. Si la respuesta pierde el signo, el equipo de acopio pierde la cifra exacta con la que puede priorizar el seguimiento.
 
-También quise que la consulta siguiera siendo útil durante una caída de Gemini. La prueba simula un tiempo de espera agotado y comprueba HTTP 200, los mismos indicadores y `explicacion.estado = no_disponible`. El [runbook](runbook-acopio.md) describe cómo diagnosticar el fallo y verificar la recuperación. Las nueve pruebas pasaron en Python 3.10 y 3.14. [Ejecución en GitHub Actions](https://github.com/Aquilesmar/AgriTrace-DB-Architecture/actions/runs/42119247448)
+También quise que la consulta siguiera siendo útil durante una caída de Gemini. La prueba simula un tiempo de espera agotado y comprueba HTTP 200, los mismos indicadores y `explicacion.estado = no_disponible`. El [runbook](runbook-acopio.md) describe cómo diagnosticar el fallo y verificar la recuperación. Las nueve pruebas pasaron en Python 3.10 y 3.14. [Ejecución en GitHub Actions](https://github.com/Aquilesmar/AgroTrace-DB-Architecture/actions/runs/42119247448)
 
 ## Qué cambió en el SQL
 

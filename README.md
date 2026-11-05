@@ -1,8 +1,8 @@
-# AgriTrace · Demo de backend y datos
+# AgroTrace · Demo de backend y datos
 
-[![Pruebas de regresión](https://github.com/Aquilesmar/AgriTrace-DB-Architecture/actions/workflows/regresion.yml/badge.svg?branch=main)](https://github.com/Aquilesmar/AgriTrace-DB-Architecture/actions/workflows/regresion.yml)
+[![Pruebas de regresión](https://github.com/Aquilesmar/AgroTrace-DB-Architecture/actions/workflows/regresion.yml/badge.svg?branch=main)](https://github.com/Aquilesmar/AgroTrace-DB-Architecture/actions/workflows/regresion.yml)
 
-**¿Qué productores de una campaña superaron su cupo de acopio y por cuántos kilos?** Armé AgriTrace a partir de esa pregunta operativa de AgroTrace. La API usa Django y SQLite y se puede probar en local con datos ficticios.
+**¿Qué productores de una campaña superaron su cupo de acopio y por cuántos kilos?** Armé esta demo pública a partir de esa pregunta operativa de mi trabajo con AgroTrace. La API usa Django y SQLite y se puede probar en local con datos ficticios.
 
 Me interesaba mostrar qué se pierde cuando un sistema recorta un saldo negativo a cero. En la [revisión técnica](docs/bitacora.md) explico la decisión con un caso de 125 kg de exceso, cómo lo cubre la prueba de regresión y qué pasa si falla Gemini.
 
@@ -67,7 +67,7 @@ Agregá `?explicar=1` a la petición. El modo predeterminado es `simulado` y usa
 curl.exe -i "http://127.0.0.1:8000/api/campanas/demo-2026/acopio/?explicar=1"
 ```
 
-Para usar Gemini, configurá `AGRITRACE_EXPLICADOR=gemini` y una clave propia en la variable de entorno `GEMINI_API_KEY` antes de arrancar Django. `GEMINI_MODEL` permite cambiar el modelo y por defecto es `gemini-3.5-flash`. La petición al proveedor contiene una instrucción y los cinco indicadores agregados de `resumen`. [Referencia de Gemini](https://ai.google.dev/api/generate-content)
+Para usar Gemini, configurá `AGROTRACE_EXPLICADOR=gemini` y una clave propia en la variable de entorno `GEMINI_API_KEY` antes de arrancar Django. `GEMINI_MODEL` permite cambiar el modelo y por defecto es `gemini-3.5-flash`. La petición al proveedor contiene una instrucción y los cinco indicadores agregados de `resumen`. [Referencia de Gemini](https://ai.google.dev/api/generate-content)
 
 Si falla el proveedor, el endpoint mantiene HTTP 200 y los mismos indicadores. El campo adicional queda así.
 

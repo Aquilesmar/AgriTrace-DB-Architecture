@@ -82,7 +82,7 @@ class AcopioTests(TestCase):
         Entrega.objects.create(cupo=cupo, peso_kg=110)
         self.assertEqual(self.consultar_productor("P-001")["acopiado_kg"], 600)
 
-    @override_settings(AGRITRACE_EXPLICADOR="simulado", GEMINI_API_KEY=None)
+    @override_settings(AGROTRACE_EXPLICADOR="simulado", GEMINI_API_KEY=None)
     @patch("acopio.explicacion.urlopen")
     def test_explicacion_simulada_usa_resumen_sin_red(self, urlopen):
         url = reverse("resumen-acopio", args=["demo-2026"])
@@ -95,7 +95,7 @@ class AcopioTests(TestCase):
         self.assertIn("El exceso acumulado fue de 125 kg.", explicacion["texto"])
         urlopen.assert_not_called()
 
-    @override_settings(AGRITRACE_EXPLICADOR="gemini", GEMINI_API_KEY="clave-ficticia")
+    @override_settings(AGROTRACE_EXPLICADOR="gemini", GEMINI_API_KEY="clave-ficticia")
     @patch("acopio.explicacion.urlopen")
     def test_gemini_recibe_solo_los_indicadores_agregados(self, urlopen):
         texto = "Hubo desvíos en 1 de 3 productores."
@@ -115,7 +115,7 @@ class AcopioTests(TestCase):
         self.assertEqual(peticion.get_header("X-goog-api-key"), "clave-ficticia")
         self.assertEqual(urlopen.call_args.kwargs["timeout"], 5)
 
-    @override_settings(AGRITRACE_EXPLICADOR="gemini", GEMINI_API_KEY="clave-ficticia")
+    @override_settings(AGROTRACE_EXPLICADOR="gemini", GEMINI_API_KEY="clave-ficticia")
     @patch("acopio.explicacion.urlopen", side_effect=TimeoutError)
     def test_fallo_de_gemini_conserva_indicadores_y_saldo_negativo(self, urlopen):
         url = reverse("resumen-acopio", args=["demo-2026"])

@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 def explicar_acopio(resumen):
-    modo = settings.AGRITRACE_EXPLICADOR
+    modo = settings.AGROTRACE_EXPLICADOR
     if modo == "simulado":
         texto = (
             f"Se acopiaron {resumen['acopiado_total_kg']} kg sobre un cupo total "

@@ -13,14 +13,14 @@ La prueba simula un tiempo de espera agotado sin red ni credenciales. Debe termi
 ## Diagnosticar una respuesta real de la demo
 
 1. Pedí primero `/api/campanas/demo-2026/acopio/` sin `?explicar=1`. Si responde 404, revisá el código de campaña y cargá `acopio_demo` siguiendo el README. Si responde HTTP 200 con los indicadores esperados, revisá por separado la explicación.
-2. Si la explicación indica `no_disponible`, revisá la terminal de Django. El aviso `Explicación de Gemini no disponible` muestra el tipo de error. Para `TimeoutError` o `URLError`, revisá la conectividad y el tiempo de respuesta. Para `HTTPError`, revisá la disponibilidad del modelo, los permisos y la cuota. Comprobá que el proceso de Django reciba `GEMINI_API_KEY` y, si elegiste otro modelo, `GEMINI_MODEL`. Mantené el valor de la clave fuera de los registros. Si el aviso es `Modo de explicación inválido`, revisá `AGRITRACE_EXPLICADOR`.
+2. Si la explicación indica `no_disponible`, revisá la terminal de Django. El aviso `Explicación de Gemini no disponible` muestra el tipo de error. Para `TimeoutError` o `URLError`, revisá la conectividad y el tiempo de respuesta. Para `HTTPError`, revisá la disponibilidad del modelo, los permisos y la cuota. Comprobá que el proceso de Django reciba `GEMINI_API_KEY` y, si elegiste otro modelo, `GEMINI_MODEL`. Mantené el valor de la clave fuera de los registros. Si el aviso es `Modo de explicación inválido`, revisá `AGROTRACE_EXPLICADOR`.
 
 ## Recuperar la explicación en modo simulado
 
 Detené Django con `Ctrl+C` y arrancalo de nuevo en modo simulado.
 
 ```powershell
-$env:AGRITRACE_EXPLICADOR = "simulado"
+$env:AGROTRACE_EXPLICADOR = "simulado"
 .\.venv\Scripts\python.exe manage.py runserver 127.0.0.1:8000
 ```
 
