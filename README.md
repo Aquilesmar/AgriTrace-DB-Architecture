@@ -1,5 +1,7 @@
 # AgriTrace · Demo de backend y datos
 
+[![Pruebas de regresión](https://github.com/Aquilesmar/AgriTrace-DB-Architecture/actions/workflows/regresion.yml/badge.svg?branch=main)](https://github.com/Aquilesmar/AgriTrace-DB-Architecture/actions/workflows/regresion.yml)
+
 **¿Qué productores de una campaña superaron su cupo de acopio y por cuántos kilos?** AgriTrace es una demo de portafolio inspirada en esa pregunta operativa de AgroTrace. La implementación y los datos ficticios viven en este repositorio. La API usa Django y SQLite.
 
 **Mi aporte — Aquiles Claudio.** Elegí el caso de acopio, definí que el saldo debía conservar el signo y pedí cubrir los límites de la regla y la caída del proveedor de IA. Delimité qué información podía usar la demo. Codex generó el código y las pruebas con esas pautas. La [bitácora](docs/bitacora.md) distingue las comprobaciones del asistente de mi revisión personal.
@@ -83,6 +85,8 @@ Si falla el proveedor, el endpoint mantiene HTTP 200 y los mismos indicadores. E
 1. Contrastá el resultado de `P-003` con las dos entregas de la [carga ficticia](acopio/fixtures/acopio_demo.json). El cálculo es `500 - (300 + 325) = -125 kg`.
 2. Si la campaña de ejemplo devuelve 404, comprobá el código `demo-2026` y corré `manage.py loaddata acopio_demo` desde la raíz.
 3. Si falla la explicación, revisá la terminal de Django. En modo Gemini, comprobá la configuración del modelo y de la clave. La prueba de fallo simula un tiempo de espera agotado y compara el JSON completo de indicadores con la respuesta sin explicación.
+
+El [runbook de acopio](docs/runbook-acopio.md) explica cómo reproducir la caída del proveedor y verificar la recuperación. GitHub Actions ejecuta las pruebas con Python 3.10 y 3.14 al abrir o actualizar un pull request hacia `main` y al subir cambios a esa rama.
 
 ## Consultas de arquitectura
 
