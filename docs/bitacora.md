@@ -1,31 +1,30 @@
-# Bitácora de trabajo con IA
+# Revisión técnica de AgriTrace
 
-## Aporte y alcance
+## Qué quise resolver
 
-- **Aquiles Claudio** definió el problema a partir de su experiencia con AgroTrace, el requisito de conservar los saldos negativos y los casos que había que probar. También delimitó el uso de datos ficticios y el papel explicativo de Gemini.
-- **Codex** generó el código de la demo, la migración, los datos de ejemplo, la integración con Gemini, las pruebas y esta documentación. También ajustó el SQL y el simulador públicos en una copia local separada.
+Tomé una pregunta del trabajo con AgroTrace y la llevé a una demo con datos ficticios. Quería que una persona de acopio pudiera distinguir a quien llegó justo a su cupo de quien se pasó y, en ese caso, saber por cuántos kilos. Por eso definí el saldo como cupo menos acopio y dejé que el signo se conserve en la respuesta.
 
-## Comprobaciones ejecutadas por Codex
+Usé Codex para preparar la implementación, los datos de prueba y los casos de regresión. Le marqué los casos que tenía que cubrir y el límite de la integración con Gemini. El cálculo queda en Django y Gemini recibe el resumen para explicarlo.
 
-- Aplicó la migración, cargó los 12 registros ficticios y ejecutó nueve pruebas con Python 3.14 y Django 5.2.19. Comprobó por HTTP el JSON del README, la explicación simulada y el 404.
-- Con una respuesta de Gemini simulada, verificó que la petición incluye los indicadores agregados. Simuló un tiempo de espera agotado y comparó todos los indicadores con la respuesta sin explicación. La llamada al servicio real queda pendiente.
-- Ejecutó las tres consultas con el simulador y verificó sus resultados. Para `riesgo` probó 2026, 2025 y un año sin registros.
-- El 5 de noviembre de 2026 volvió a calcular el saldo de `P-003` a partir de la carga ficticia y ejecutó `python manage.py test -v 2`. Pasaron las nueve pruebas, incluida la del tiempo de espera agotado. El [runbook](runbook-acopio.md) deja los comandos para repetir la comprobación.
+## Revisión manual del caso P-003
 
-## Caso para explicar en entrevista
+Mi primera comprobación es seguir las entregas de un productor desde la [carga ficticia](../acopio/fixtures/acopio_demo.json) hasta la respuesta de la API. Para `P-003` hay dos entregas, de 300 y 325 kg, y un cupo de 500 kg. La cuenta es `500 - (300 + 325) = -125 kg`.
 
-`P-003` tiene dos entregas de 300 y 325 kg y un cupo de 500 kg. El saldo es `500 - 625 = -125 kg`. La prueba comprueba tanto el signo del saldo como el valor `true` del desvío. Codex probó deliberadamente un recorte a cero en memoria. La prueba falló con `0 != -125` y volvió a pasar al ejecutar la implementación original.
+Con el servidor levantado según el [README](../README.md#probar-en-local), esta consulta permite revisar ese registro en PowerShell.
 
-## Fallo del ejemplo publicado
+```powershell
+$acopio = Invoke-RestMethod 'http://127.0.0.1:8000/api/campanas/demo-2026/acopio/'
+$acopio.productores | Where-Object { $_.productor -eq 'P-003' }
+```
 
-Al ejecutar el SQL original en SQLite apareció `near "==": syntax error` por el encabezado sin comentar. Codex convirtió los encabezados en comentarios, adaptó las consultas al esquema ficticio y cambió el simulador para ejecutar ese mismo archivo en memoria. Verificó el resultado al correr los tres ejemplos del README.
+Espero ver `acopiado_kg = 625`, `saldo_kg = -125` y `desvio = true`. En `P-002`, el saldo es exactamente cero y el desvío queda en `false`. El resumen de la campaña conserva los 125 kg de exceso aunque otro productor todavía tenga cupo disponible.
 
-## Revisión personal de Aquiles
+## Qué detecta la regresión
 
-| Comprobación | Resultado |
-| --- | --- |
-| Sumar 300 + 325 kg y contrastar `500 − 625 = −125` con la respuesta HTTP de `P-003`. | Pendiente |
-| Ejecutar la prueba del exceso y la suite completa con los comandos del README. | Pendiente |
-| Seguir el runbook y verificar la recuperación de la explicación en modo simulado. | Pendiente |
+Como experimento se recortó temporalmente el saldo a cero en memoria. La prueba falló con `0 != -125` y volvió a pasar al quitar el recorte. Ese es el cambio que más me interesa detectar en una revisión de código. Si la respuesta pierde el signo, el equipo de acopio pierde la cifra exacta con la que puede priorizar el seguimiento.
 
-Al completar una comprobación, anotar la fecha, el comando o la petición y el resultado observado. Si aparece un fallo, registrar qué se esperaba, qué devolvió el sistema, qué se cambió y qué prueba confirmó la corrección.
+También quise que la consulta siguiera siendo útil durante una caída de Gemini. La prueba simula un tiempo de espera agotado y comprueba HTTP 200, los mismos indicadores y `explicacion.estado = no_disponible`. El [runbook](runbook-acopio.md) describe cómo diagnosticar el fallo y verificar la recuperación. Las nueve pruebas pasaron en Python 3.10 y 3.14. [Ejecución en GitHub Actions](https://github.com/Aquilesmar/AgriTrace-DB-Architecture/actions/runs/42119247448)
+
+## Qué cambió en el SQL
+
+La primera ejecución del catálogo publicado en SQLite devolvió `near "==": syntax error` porque el encabezado estaba escrito como texto suelto. El ajuste lo convirtió en un comentario y dejó el simulador leyendo las consultas del mismo archivo. La verificación en consola confirmó los resultados de los tres ejemplos del README.

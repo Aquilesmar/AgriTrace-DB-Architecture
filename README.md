@@ -2,9 +2,9 @@
 
 [![Pruebas de regresión](https://github.com/Aquilesmar/AgriTrace-DB-Architecture/actions/workflows/regresion.yml/badge.svg?branch=main)](https://github.com/Aquilesmar/AgriTrace-DB-Architecture/actions/workflows/regresion.yml)
 
-**¿Qué productores de una campaña superaron su cupo de acopio y por cuántos kilos?** AgriTrace es una demo de portafolio inspirada en esa pregunta operativa de AgroTrace. La implementación y los datos ficticios viven en este repositorio. La API usa Django y SQLite.
+**¿Qué productores de una campaña superaron su cupo de acopio y por cuántos kilos?** Armé AgriTrace a partir de esa pregunta operativa de AgroTrace. La API usa Django y SQLite y se puede probar en local con datos ficticios.
 
-**Mi aporte — Aquiles Claudio.** Elegí el caso de acopio, definí que el saldo debía conservar el signo y pedí cubrir los límites de la regla y la caída del proveedor de IA. Delimité qué información podía usar la demo. Codex generó el código y las pruebas con esas pautas. La [bitácora](docs/bitacora.md) distingue las comprobaciones del asistente de mi revisión personal.
+Me interesaba mostrar qué se pierde cuando un sistema recorta un saldo negativo a cero. En la [revisión técnica](docs/bitacora.md) explico la decisión con un caso de 125 kg de exceso, cómo lo cubre la prueba de regresión y qué pasa si falla Gemini.
 
 ## Flujo
 

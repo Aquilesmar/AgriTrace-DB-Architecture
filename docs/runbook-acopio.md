@@ -1,6 +1,6 @@
 # Runbook de acopio y explicación
 
-Usá el entorno local y los datos ficticios del [README](../README.md#probar-en-local). Ejecutá los comandos desde la raíz del repositorio en PowerShell.
+Uso este recorrido para diagnosticar por separado los indicadores de acopio y la explicación. Para reproducirlo, prepará el entorno y los datos ficticios como indica el [README](../README.md#probar-en-local) y ejecutá los comandos desde la raíz del repositorio en PowerShell.
 
 ## Reproducir la falla de Gemini
 
