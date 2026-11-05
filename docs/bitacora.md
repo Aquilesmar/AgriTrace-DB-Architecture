@@ -10,6 +10,7 @@
 - Aplicó la migración, cargó los 12 registros ficticios y ejecutó nueve pruebas con Python 3.14 y Django 5.2.19. Comprobó por HTTP el JSON del README, la explicación simulada y el 404.
 - Con una respuesta de Gemini simulada, verificó que la petición incluye los indicadores agregados. Simuló un tiempo de espera agotado y comparó todos los indicadores con la respuesta sin explicación. La llamada al servicio real queda pendiente.
 - Ejecutó las tres consultas con el simulador y verificó sus resultados. Para `riesgo` probó 2026, 2025 y un año sin registros.
+- El 5 de noviembre de 2026 volvió a calcular el saldo de `P-003` a partir de la carga ficticia y ejecutó `python manage.py test -v 2`. Pasaron las nueve pruebas, incluida la del tiempo de espera agotado. El [runbook](runbook-acopio.md) deja los comandos para repetir la comprobación.
 
 ## Caso para explicar en entrevista
 
@@ -25,6 +26,6 @@ Al ejecutar el SQL original en SQLite apareció `near "==": syntax error` por el
 | --- | --- |
 | Sumar 300 + 325 kg y contrastar `500 − 625 = −125` con la respuesta HTTP de `P-003`. | Pendiente |
 | Ejecutar la prueba del exceso y la suite completa con los comandos del README. | Pendiente |
-| Revisar el alcance y los archivos del cambio local antes de publicar. | Pendiente |
+| Seguir el runbook y verificar la recuperación de la explicación en modo simulado. | Pendiente |
 
 Al completar una comprobación, anotar la fecha, el comando o la petición y el resultado observado. Si aparece un fallo, registrar qué se esperaba, qué devolvió el sistema, qué se cambió y qué prueba confirmó la corrección.
